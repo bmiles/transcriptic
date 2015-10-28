@@ -296,8 +296,6 @@ if not on_rtd or on_rtd:  # only import and set the theme if we're building docs
         ]
     }
     html_theme_options = {
-      'logo': 'transcriptic-logo.png',
-      'logo_name': True,
       'logo_text_align': 'center',
       'description': "A command-line interface and Python client library for interacting with Transcriptic's API.",
       'github_user': 'transcriptic',
