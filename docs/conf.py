@@ -26,8 +26,8 @@ MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot',
                 'transcriptic', 'transcriptic.cli', 'transcriptic.objects',
                 'transcriptic.analysis.spectrophotometry', 'transcriptic.ipython',
                 'transcriptic.config', 'transcriptic.english', 'transcriptic.util']
-for mod_name in MOCK_MODULES:
-  sys.modules[mod_name] = MagicMock()
+
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 sys.path.insert(0, os.path.abspath('../transcriptic'))
 
