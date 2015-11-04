@@ -24,7 +24,8 @@ class Mock(MagicMock):
 MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot',
                 'sklearn.grid_search', 'sklearn.externals', 'plotly',
                 'plotly.graph_objs', 'matplotlib.gridspec', 'scikit-learn',
-                'pandas', 'plotly.plotly', 'plotly.tools', 'Ipython.display']
+                'pandas', 'plotly.plotly', 'plotly.tools', 'Ipython.display',
+                'libpng', 'freetype']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 sys.path.insert(0, os.path.abspath('../transcriptic'))
