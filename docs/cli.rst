@@ -11,8 +11,8 @@ Command Line Interface
 ~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.analyze
 
-``release``
-~~~~~~~~~~~
+``build-release``
+~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.release
 
 ``compile``
@@ -56,7 +56,7 @@ Command Line Interface
 .. autofunction:: transcriptic.cli.preview
 
 ``projects``
-~~~~~~~~~~~
+~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.projects
 
 ``protocols``
@@ -71,6 +71,6 @@ Command Line Interface
 ~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.summarize
 
-``upload``
-~~~~~~~~~~
-.. autofunction:: transcriptic.cli.upload
+``upload-release``
+~~~~~~~~~~~~~~~~~~
+.. autofunction:: transcriptic.cli.upload_release
