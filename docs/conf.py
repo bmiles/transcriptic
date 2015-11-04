@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# transcriptic documentation build configuration file, created by
-# sphinx-quickstart on Tue Oct 27 15:01:12 2015.
-#
 # This file is execfile()d with the current directory set to its
 # containing dir.
 #
@@ -30,10 +27,6 @@ MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot',
                 'pandas', 'plotly.plotly', 'plotly.tools', 'Ipython.display']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../transcriptic'))
 
 # -- General configuration ------------------------------------------------
