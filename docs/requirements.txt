@@ -1,1 +1,2 @@
 sphinxcontrib-napoleon
+-e git://github.com/transcriptic/transcriptic.git@master#egg=autoprotocol
