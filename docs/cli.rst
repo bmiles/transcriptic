@@ -86,3 +86,4 @@ Command Line Interface
 ``upload``
 ~~~~~~~~~~
 .. autofunction:: transcriptic.cli.upload
+
