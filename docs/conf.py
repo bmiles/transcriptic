@@ -12,21 +12,22 @@
 import alabaster
 import sys
 import os
-from mock import Mock as MagicMock
-
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-            return Mock()
+from mock import MagicMock
 
 # All imported modules containing C components must be mocked (added to the
 # MOCK_MODULES list below)
+
 MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot',
                 'sklearn.grid_search', 'sklearn.externals', 'plotly',
                 'plotly.graph_objs', 'matplotlib.gridspec', 'scikit-learn',
-                'pandas', 'plotly.plotly', 'plotly.tools', 'Ipython.display',
-                'libpng', 'freetype']
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+                'pandas', 'plotly.plotly', 'plotly.tools', 'IPython.display',
+                'libpng', 'freetype', 'IPython', 'autoprotocol',
+                'autoprotocol.util', 'click', 'click.core', 'click.decorators',
+                'transcriptic', 'transcriptic.cli', 'transcriptic.objects',
+                'transcriptic.analysis.spectrophotometry', 'transcriptic.ipython',
+                'transcriptic.config', 'transcriptic.english', 'transcriptic.util']
+for mod_name in MOCK_MODULES:
+  sys.modules[mod_name] = MagicMock()
 
 sys.path.insert(0, os.path.abspath('../transcriptic'))
 
