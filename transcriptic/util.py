@@ -4,12 +4,6 @@ from past.builtins import basestring
 from past.utils import old_div
 import re
 
-if sys.version_info[0] == 2:
-    # workaround for Sphinx autodoc bug
-    import __builtin__
-    def print(*args, **kwargs):
-        __builtin__.print(*args, **kwargs)
-
 def natural_sort(l):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]

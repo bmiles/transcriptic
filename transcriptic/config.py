@@ -7,13 +7,6 @@ import os
 from os.path import expanduser
 from transcriptic.objects import Project
 
-if sys.version_info[0] == 2:
-    # workaround for Sphinx autodoc bug
-    import __builtin__
-    def print(*args, **kwargs):
-        __builtin__.print(*args, **kwargs)
-
-
 class Connection(object):
   def __init__(
       self, email = None, token = None, organization_id = False, api_root = "https://secure.transcriptic.com", organization = False,

@@ -12,11 +12,6 @@ from IPython.display import HTML, display
 from transcriptic.util import humanize
 from transcriptic import dataset as get_dataset
 
-if sys.version_info[0] == 2:
-    # workaround for Sphinx autodoc bug
-    import __builtin__
-    def print(*args, **kwargs):
-        __builtin__.print(*args, **kwargs)
 
 class PlateRead(object):
     '''

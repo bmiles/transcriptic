@@ -39,11 +39,6 @@ try:
 except NameError:
   pass
 
-if sys.version_info[0] == 2:
-    # workaround for Sphinx autodoc bug
-    import __builtin__
-    def print(*args, **kwargs):
-        __builtin__.print(*args, **kwargs)
 
 @click.group()
 @click.option('--apiroot', default=None)
