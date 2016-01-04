@@ -1,5 +1,5 @@
 transcriptic.analysis
 ---------------------
 
-.. automodule:: transcriptic.analysis
+.. automodule:: transcriptic.analysis.spectrophotometry
 
