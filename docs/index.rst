@@ -8,7 +8,6 @@
     cli
     transcriptic
     objects
-    analysis
 
 .. include:: README.rst
 
