@@ -37,7 +37,8 @@ needs_sphinx = '1.2'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx.ext.napoleon'
 ]
 
 # Napoleon settings
