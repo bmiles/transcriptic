@@ -21,7 +21,7 @@ MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot',
                 'sklearn.grid_search', 'sklearn.externals', 'plotly',
                 'plotly.graph_objs', 'matplotlib.gridspec', 'scikit-learn',
                 'pandas', 'IPython.display', 'plotly.plotly', 'plotly', 'plotly.tools',
-                'libpng', 'freetype', 'IPython']
+                'libpng', 'freetype', 'IPython', 'past', 'past.builtins']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
