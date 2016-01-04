@@ -1,89 +1,73 @@
 Command Line Interface
 ----------------------
 
-.. .. automodule:: transcriptic.cli
-..     :undoc-members:
-..     :inherited-members:
-..     :exclude-members: command, AutoprotocolParser, OrderedDict, Command, input
-
-
-``analyze``
-~~~~~~~~~~~
+``transcriptic analyze``
+~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.analyze
 
-``build-release``
-~~~~~~~~~~~~~~~~~
+``transcriptic build-release``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.release
 
-``release``
-~~~~~~~~~~~
-.. autofunction:: transcriptic.cli.release
-
-``compile``
-~~~~~~~~~~~
+``transcriptic compile``
+~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.compile
 
-``create_package``
-~~~~~~~~~~~~~~~~~~
+``transcriptic create-package``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.create_package
 
-``create_project``
-~~~~~~~~~~~~~~~~~~
+``transcriptic create-project``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.create_project
 
-``delete_package``
-~~~~~~~~~~~~~~~~~~
+``transcriptic delete-package``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.delete_package
 
-``delete_project``
-~~~~~~~~~~~~~~~~~~
+``transcriptic delete-project``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.delete_project
 
-``format``
-~~~~~~~~~~
+``transcriptic format``
+~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.format
 
-``init``
-~~~~~~~~
+``transcriptic init``
+~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.init
 
-``login``
-~~~~~~~~~
+``transcriptic login``
+~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.login
 
-``packages``
-~~~~~~~~~~~~
+``transcriptic packages``
+~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.packages
 
-``preview``
-~~~~~~~~~~~
+``transcriptic preview``
+~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.preview
 
-``projects``
-~~~~~~~~~~~~
+``transcriptic projects``
+~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.projects
 
-``projects``
-~~~~~~~~~~~
-.. autofunction:: transcriptic.cli.projects
-
-``protocols``
-~~~~~~~~~~~~~
+``transcriptic protocols``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.protocols
 
-``submit``
-~~~~~~~~~~
+``transcriptic submit``
+~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.submit
 
-``summarize``
-~~~~~~~~~~~~~
+
+``transcriptic summarize``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.summarize
 
-``upload-release``
-~~~~~~~~~~~~~~~~~~
-.. autofunction:: transcriptic.cli.upload_release
 
-``upload``
-~~~~~~~~~~
-.. autofunction:: transcriptic.cli.upload
+``transcriptic upload-release``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: transcriptic.cli.upload_release
 

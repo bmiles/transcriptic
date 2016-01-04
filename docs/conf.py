@@ -9,10 +9,10 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import alabaster
 import sys
 import os
-from mock import MagicMock
+import alabaster
+import mock
 
 # All imported modules containing C components must be mocked (added to the
 # MOCK_MODULES list below)
@@ -20,15 +20,11 @@ from mock import MagicMock
 MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot',
                 'sklearn.grid_search', 'sklearn.externals', 'plotly',
                 'plotly.graph_objs', 'matplotlib.gridspec', 'scikit-learn',
-                'pandas', 'plotly.plotly', 'plotly.tools', 'IPython.display',
-                'libpng', 'freetype', 'IPython', 'autoprotocol',
-                'autoprotocol.util', 'click', 'click.core', 'click.decorators',
-                'transcriptic', 'transcriptic.cli', 'transcriptic.objects',
-                'transcriptic.analysis.spectrophotometry', 'transcriptic.ipython',
-                'transcriptic.config', 'transcriptic.english', 'transcriptic.util']
+                'pandas', 'IPython.display', 'plotly.plotly', 'plotly', 'plotly.tools',
+                'libpng', 'freetype', 'IPython']
 
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
-
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = mock.Mock()
 sys.path.insert(0, os.path.abspath('../transcriptic'))
 
 # -- General configuration ------------------------------------------------

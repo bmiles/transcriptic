@@ -197,7 +197,7 @@ class Absorbance(PlateRead):
         # Use default labels if concentration not provided
         if not conc_list:
             if "xlim" not in kwargs:
-              kwargs["xlim"] = (-1, len(dataf.mean()))
+                kwargs["xlim"] = (-1, len(dataf.mean()))
             dataf.mean().plot(**kwargs)
         else:
             plot_obj = pandas.DataFrame({"values":dataf.mean(), "conc":np.asarray(conc_list)})
