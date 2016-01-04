@@ -3,6 +3,12 @@ from builtins import str
 from builtins import object
 import autoprotocol.util
 
+if sys.version_info[0] == 2:
+    # workaround for Sphinx autodoc bug
+    import __builtin__
+    def print(*args, **kwargs):
+        __builtin__.print(*args, **kwargs)
+
 PLURAL_UNITS = ["microliter", "nanoliter", "milliliter", "second", "minute",
                 "hour", "g", "nanometer"]
 
