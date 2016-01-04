@@ -3,19 +3,19 @@ transcriptic.analysis
 
 PlateRead
 ~~~~~~~~~
-.. autoclass:: transcriptic.analysis.spectrophotometry.PlateRead
+.. autoclass:: transcriptic.analysis.spectrophotometry.PlateRead()
 
 Absorbance
 ~~~~~~~~~~
-.. autoclass:: transcriptic.analysis.spectrophotometry.Absorbance
+.. autoclass:: transcriptic.analysis.spectrophotometry.Absorbance()
 
 Fluorescence
 ~~~~~~~~~~~~
-.. autoclass:: transcriptic.analysis.spectrophotometry.Fluorescence
+.. autoclass:: transcriptic.analysis.spectrophotometry.Fluorescence()
 
 Luminescence
 ~~~~~~~~~~~~
-.. autoclass:: transcriptic.analysis.spectrophotometry.Luminescence
+.. autoclass:: transcriptic.analysis.spectrophotometry.Luminescence()
 
 
 
