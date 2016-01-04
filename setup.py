@@ -8,7 +8,8 @@ setup(
     packages=['transcriptic', 'transcriptic.analysis'],
     install_requires=[
         'Click>=5.1',
-        'requests'
+        'requests',
+        'autoprotocol'
     ],
     entry_points='''
         [console_scripts]
