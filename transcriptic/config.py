@@ -26,6 +26,7 @@ class Connection(object):
     Your organization's name.
   verbose : bool
     Print the request being made on the command line.
+
   '''
   def __init__(
       self, email = None, token = None, organization_id = False, api_root = "https://secure.transcriptic.com", organization = False,
@@ -52,12 +53,38 @@ class Connection(object):
   def from_file(path):
     '''
     Retrieve connection details from a file.
+
+    Parameters
+    ----------
+    path : str
+      Path to file from which to retrieve connection details in the form of:
+
+      .. code-block:: json
+
+        {
+          "email": <email>,
+          "token": <api token>,
+          "organization_id": <id>, // or organization
+          "api_root": <url>
+        }
+
+
+
     '''
     with open(expanduser(path), 'r') as f:
       cfg = json.loads(f.read())
       return Connection(**cfg)
 
   def save(self, path):
+    '''
+    Save connection details to a file
+
+    Parameters
+    ----------
+    path : str
+      Path of file in which to save details specified by this Connection object.
+
+    '''
     with open(expanduser(path), 'w') as f:
       f.write(json.dumps({
         'email': self.email,
@@ -73,6 +100,10 @@ class Connection(object):
       return "%s/%s/%s" % (self.api_root, self.organization_id, path)
 
   def projects(self):
+    '''
+    Return list of Project objects belonging to your organization.
+
+    '''
     req = self.get('')
     if req.status_code == 200:
       return [Project(project['id'], project, connection = self) for project in req.json()['projects']]
@@ -83,6 +114,11 @@ class Connection(object):
       )
 
   def project(self, project_id):
+    '''
+    Return a Project object based on a project id within your organization.
+
+
+    '''
     req = self.get(project_id)
     if req.status_code == 200:
       return Project(project_id, req.json(), connection = self)
@@ -92,6 +128,15 @@ class Connection(object):
       )
 
   def create_project(self, title, is_developer = False):
+    '''
+    Create a new project within your organization.
+
+    Parameters
+    ----------
+    title : str
+      Project title
+
+    '''
     req = self.post('', data = json.dumps({
       'name': title,
       'is_developer': is_developer
@@ -103,11 +148,19 @@ class Connection(object):
       raise RuntimeError(req.text)
 
   def delete_project(self, project_id):
+    '''
+    Delete project with id specified
+
+    '''
     req = self.delete(project_id)
     if req.status_code == 200:
       return True
 
   def archive_project(self, project_id):
+    '''
+    Archive project with id specified
+
+    '''
     req = self.put(project_id, data = json.dumps({"project": {"archived": True}}))
     if req.status_code == 200:
       return True
@@ -115,6 +168,10 @@ class Connection(object):
       raise RuntimeError(req.json())
 
   def packages(self):
+    '''
+    Return a dictionary describing all packages within your organization.
+
+    '''
     req = self.get("packages")
     if req.status_code == 200:
       return req.json()
@@ -122,6 +179,10 @@ class Connection(object):
       raise RuntimeError(req.text)
 
   def package(self, package_id):
+    '''
+    Return the JSON representation of the package with the id specified.
+
+    '''
     req = self.get("packages/%s" % package_id)
     if req.status_code == 200:
       return req.json()
@@ -129,10 +190,29 @@ class Connection(object):
       raise RuntimeError(req.text)
 
   def resources(self, query):
+    '''
+    Query the catalog of resources
+
+    Parameters
+    ----------
+    query : str
+
+    '''
     req = self.get("/_commercial/kits?q=%s&per_page=1000" % query)
     return req.json()
 
   def create_package(self, name, description):
+    '''
+    Create a new package.
+
+    Parameters
+    ----------
+    name : str
+      Package name
+    description: str
+      Package description
+
+    '''
     req = self.post('packages', data = json.dumps({
       "name": "%s%s" % ("com.%s." % self.organization_id, name),
       "description": description
@@ -143,6 +223,10 @@ class Connection(object):
       raise RuntimeError(req.text)
 
   def delete_package(self, id):
+    '''
+    Delete package with the id specified.
+
+    '''
     req = self.delete('packages/%s' % id)
     if req.status_code == 200:
         return True

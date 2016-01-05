@@ -15,7 +15,6 @@ Submodules
 
    transcriptic.cli
    transcriptic.config
-   transcriptic.english
    transcriptic.objects
    transcriptic.util
 

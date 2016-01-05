@@ -174,7 +174,7 @@ def submit(protocol, project, title = None, test_mode = False):
 
 def dataset(id, key = "*"):
   '''
-  Return a run's dataset based on its id
+  Return a dataset based on its id
 
   Parameters
   ----------

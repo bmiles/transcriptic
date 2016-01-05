@@ -109,4 +109,6 @@ def humanize(well_ref, well_count, col_count):
     return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[row] + str(col + 1)
 
 def by_well(datasets, well):
+    '''
+    '''
     return [datasets[reading].props['data'][well][0] for reading in list(datasets.keys())]
