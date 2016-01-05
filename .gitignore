@@ -29,9 +29,6 @@ htmlcov/
 coverage.xml
 .tox/
 docs/_build/
-_static/
-_template/
-html/
 doctrees/
 build/lib/
 transcriptic/
