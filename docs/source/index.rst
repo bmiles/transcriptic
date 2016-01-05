@@ -2,16 +2,20 @@
 ``transcriptic`` CLI and Python Client Library documentation
 ============================================================
 
-.. toctree::
-    :hidden:
-
-    cli
-    transcriptic
-    objects
-    analysis
-
 .. include:: README.rst
 
+contents
+========
+
+.. toctree::
+    :maxdepth: 10
+
+    modules
+    transcriptic
+
+
+Indices and tables
+==================
 
 * :ref:`genindex`
 * :ref:`modindex`
