@@ -9,6 +9,24 @@ from transcriptic.objects import Project
 
 
 class Connection(object):
+  '''
+  A Connection object to submit requests to Transcriptic.
+
+  Parameters
+  ----------
+  email : str
+    The email address you use to login to Transcriptic.
+  token : str
+    Your transcriptic API key.
+  organizaiton_id : str, optional
+    Your organization's id.
+  api_root : str
+    The base url for sending requests.  Defaults to https://secure.transcriptic.com
+  organization : str
+    Your organization's name.
+  verbose : bool
+    Print the request being made on the command line.
+  '''
   def __init__(
       self, email = None, token = None, organization_id = False, api_root = "https://secure.transcriptic.com", organization = False,
       cookie = False, verbose = False
@@ -32,6 +50,9 @@ class Connection(object):
 
   @staticmethod
   def from_file(path):
+    '''
+    Retrieve connection details from a file.
+    '''
     with open(expanduser(path), 'r') as f:
       cfg = json.loads(f.read())
       return Connection(**cfg)

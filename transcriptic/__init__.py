@@ -15,6 +15,9 @@ class AnalysisException(Exception):
     return self.message
 
 def _check_ctx():
+  '''
+  Check connection context.
+  '''
   if not ctx:
     raise Exception("No transcriptic.config.Connection context found!")
 
@@ -30,25 +33,88 @@ def _get_object(id, klass):
     raise Exception("[%d] %s" % (req.status_code, req.text))
 
 def run(id):
+  '''
+  Return a Run object based on the id of a run in your organization.
+
+  Parameters
+  ----------
+  id : str
+    13 alphanumeric string representing a run id ("rXXXXXXXXXXXX")
+
+  '''
   return _get_object(id, Run)
 
 def project(id):
+  '''
+  Return a Project object based on the id of a project in your organization.
+
+  Parameters
+  ----------
+  id : str
+    13 alphanumeric string representing a project id ("pXXXXXXXXXXXX")
+
+  '''
   return _get_object(id, Project)
 
 def resource(id):
+  '''
+  Return a Resource object based on its id.
+
+  Parameters
+  ----------
+  id : str
+    13 alphanumeric string representing a resource id "rsXXXXXXXXXXX"
+
+  '''
   return _get_object(id, Resource)
 
 def aliquot(id):
+  '''
+  Return an Aliquot object based on the id of an aliquot in your organization's inventory.
+
+  Parameters
+  ----------
+  id : str
+    13 alphanumeric string representing an aliquot id "aqXXXXXXXXXXX"
+
+  '''
   return _get_object(id, Aliquot)
 
 def container(id):
+  '''
+  Return a Container object based on the id of a container in your organization's inventory.
+
+  Parameters
+  ----------
+  id : str
+    13 alphanumeric string representing a container id "ctXXXXXXXXXXX"
+
+  '''
   return _get_object(id, Container)
 
 def preview(protocol):
+  '''
+  Return a ProtocolPreview object based on a Protocol object or Autoprotocol-formatted JSON.
+
+  Parameters
+  ----------
+  protocol : Protocol, dict
+    Protocol object or Autoprotocol-formatted JSON
+
+  '''
   _check_ctx()
   return ProtocolPreview(protocol, connection = ctx)
 
-def analyze(protocol, test_mode = False):
+def analyze(protocol):
+  '''
+  Analyze a Protocol object or Autoprotocol-formatted JSON protocol
+
+  Parameters
+  ----------
+  protocol : Protocol, dict
+    Protocol object or JSON-formatted protocol to analyze
+
+  '''
   _check_ctx()
   if isinstance(protocol, Protocol):
       protocol = protocol.as_dict()
@@ -73,6 +139,21 @@ def analyze(protocol, test_mode = False):
     raise Exception("[%d] %s" % (req.status_code, req.text))
 
 def submit(protocol, project, title = None, test_mode = False):
+  '''
+  Submit a protocol or Protocol object to a project
+
+  Parameters
+  ----------
+  protocol : Protocol, dict
+    Protocol object or JSON-formatted protocol to submit
+  project : str
+    13 alphanumeric string representing a project id to submit the protocol to
+  title : str, optional
+    Title of resulting run
+  test_mode : bool, optional
+    Submit run in test mode if set to True. Test mode runs cannot be executed on the workcell.
+
+  '''
   _check_ctx()
   if isinstance(protocol, Protocol):
       protocol = protocol.as_dict()
@@ -92,6 +173,16 @@ def submit(protocol, project, title = None, test_mode = False):
     raise Exception("[%d] %s" % (req.status_code, req.text))
 
 def dataset(id, key = "*"):
+  '''
+  Return a run's dataset based on its id
+
+  Parameters
+  ----------
+  id : str
+    13 alphanumeric string representing a dataset's id
+  key : str, optional
+
+  '''
   _check_ctx()
   req = ctx.get("/data/%s.json?key=%s" % (id, key))
   if req.status_code == 200:
