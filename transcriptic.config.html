@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>transcriptic.config module &mdash; transcriptic 2.0.4 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="transcriptic 2.0.4 documentation" href="index.html" />
+    <link rel="up" title="transcriptic package" href="transcriptic.html" />
+    <link rel="next" title="transcriptic.english module" href="transcriptic.english.html" />
+    <link rel="prev" title="transcriptic.cli module" href="transcriptic.cli.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-transcriptic.config">
+<span id="transcriptic-config-module"></span><h1>transcriptic.config module<a class="headerlink" href="#module-transcriptic.config" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="transcriptic.config.Connection">
+<em class="property">class </em><code class="descclassname">transcriptic.config.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>email=None</em>, <em>token=None</em>, <em>organization_id=False</em>, <em>api_root='https://secure.transcriptic.com'</em>, <em>organization=False</em>, <em>cookie=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
+<dl class="staticmethod">
+<dt id="transcriptic.config.Connection.from_file">
+<em class="property">static </em><code class="descname">from_file</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.from_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.url">
+<code class="descname">url</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.projects">
+<code class="descname">projects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.projects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.projects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.project">
+<code class="descname">project</code><span class="sig-paren">(</span><em>project_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.create_project">
+<code class="descname">create_project</code><span class="sig-paren">(</span><em>title</em>, <em>is_developer=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.create_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.create_project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.delete_project">
+<code class="descname">delete_project</code><span class="sig-paren">(</span><em>project_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.delete_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.delete_project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.archive_project">
+<code class="descname">archive_project</code><span class="sig-paren">(</span><em>project_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.archive_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.archive_project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.packages">
+<code class="descname">packages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.packages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.package">
+<code class="descname">package</code><span class="sig-paren">(</span><em>package_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.package" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.resources">
+<code class="descname">resources</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.resources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.resources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.create_package">
+<code class="descname">create_package</code><span class="sig-paren">(</span><em>name</em>, <em>description</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.create_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.create_package" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.delete_package">
+<code class="descname">delete_package</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.delete_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.delete_package" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.put" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="transcriptic.config.Connection.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/config.html#Connection.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.config.Connection.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">transcriptic</a></h1>
+
+
+
+<p class="blurb">A command-line interface and Python client library for interacting with Transcriptic's API.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=transcriptic&repo=transcriptic&type=follow&count=False&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="transcriptic.html">transcriptic package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="transcriptic.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="transcriptic.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="transcriptic.cli.html">transcriptic.cli module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">transcriptic.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transcriptic.english.html">transcriptic.english module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transcriptic.objects.html">transcriptic.objects module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transcriptic.util.html">transcriptic.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transcriptic.html#module-transcriptic">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://autoprotocol.org">Autoprotocol.org</a></li>
+    
+    <li class="toctree-l1"><a href="http://autoprotocol-python.readthedocs.org">Autoprotocol-Python</a></li>
+    
+    <li class="toctree-l1"><a href="http://transcriptic.com">Transcriptic Homepage</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="transcriptic.html">transcriptic package</a><ul>
+      <li>Previous: <a href="transcriptic.cli.html" title="previous chapter">transcriptic.cli module</a></li>
+      <li>Next: <a href="transcriptic.english.html" title="next chapter">transcriptic.english module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Max Hodak, Tali Herzka, Jeremy Apthorp, Yang Choo, Peter Lee.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

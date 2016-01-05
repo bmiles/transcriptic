@@ -1,0 +1,7 @@
+transcriptic.analysis.spectrophotometry module
+==============================================
+
+.. automodule:: transcriptic.analysis.spectrophotometry
+    :members:
+    :undoc-members:
+    :show-inheritance:

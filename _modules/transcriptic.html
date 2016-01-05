@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>transcriptic &mdash; transcriptic 2.0.4 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="transcriptic 2.0.4 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for transcriptic</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">past.builtins</span> <span class="kn">import</span> <span class="nb">basestring</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">transcriptic.objects</span> <span class="kn">import</span> <span class="n">Run</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">Aliquot</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">ProtocolPreview</span>
+<span class="kn">from</span> <span class="nn">autoprotocol</span> <span class="kn">import</span> <span class="n">Protocol</span>
+<span class="kn">from</span> <span class="nn">.analysis</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">ctx</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="AnalysisException"><a class="viewcode-back" href="../transcriptic.html#transcriptic.AnalysisException">[docs]</a><span class="k">class</span> <span class="nc">AnalysisException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span></div>
+
+<span class="k">def</span> <span class="nf">_check_ctx</span><span class="p">():</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">ctx</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;No transcriptic.config.Connection context found!&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">klass</span><span class="p">):</span>
+  <span class="n">_check_ctx</span><span class="p">()</span>
+  <span class="n">req</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/-/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">id</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">klass</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">,</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;[404] No object found for ID &quot;</span> <span class="o">+</span> <span class="nb">id</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%d</span><span class="s">] </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../transcriptic.html#transcriptic.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Run</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="project"><a class="viewcode-back" href="../transcriptic.html#transcriptic.project">[docs]</a><span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Project</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="resource"><a class="viewcode-back" href="../transcriptic.html#transcriptic.resource">[docs]</a><span class="k">def</span> <span class="nf">resource</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Resource</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="aliquot"><a class="viewcode-back" href="../transcriptic.html#transcriptic.aliquot">[docs]</a><span class="k">def</span> <span class="nf">aliquot</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Aliquot</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="container"><a class="viewcode-back" href="../transcriptic.html#transcriptic.container">[docs]</a><span class="k">def</span> <span class="nf">container</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Container</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="preview"><a class="viewcode-back" href="../transcriptic.html#transcriptic.preview">[docs]</a><span class="k">def</span> <span class="nf">preview</span><span class="p">(</span><span class="n">protocol</span><span class="p">):</span>
+  <span class="n">_check_ctx</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">ProtocolPreview</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../transcriptic.html#transcriptic.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">test_mode</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+  <span class="n">_check_ctx</span><span class="p">()</span>
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
+      <span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+  <span class="k">if</span> <span class="s">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">protocol</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="n">AnalysisException</span><span class="p">((</span><span class="s">&quot;Error</span><span class="si">%s</span><span class="s"> in protocol:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+      <span class="p">((</span><span class="s">&quot;s&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">protocol</span><span class="p">[</span><span class="s">&quot;errors&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">),</span>
+        <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;- &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;message&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="k">for</span>
+        <span class="n">e</span> <span class="ow">in</span> <span class="n">protocol</span><span class="p">[</span><span class="s">&quot;errors&quot;</span><span class="p">]]))))</span>
+
+  <span class="n">req</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#39;analyze_run&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+    <span class="s">&quot;protocol&quot;</span><span class="p">:</span> <span class="n">protocol</span><span class="p">,</span>
+    <span class="s">&quot;test_mode&quot;</span><span class="p">:</span> <span class="n">test_mode</span>
+  <span class="p">}))</span>
+  <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+  <span class="k">elif</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">422</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">AnalysisException</span><span class="p">((</span><span class="s">&quot;Error</span><span class="si">%s</span><span class="s"> in protocol:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+      <span class="p">((</span><span class="s">&quot;s&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">&#39;protocol&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">),</span>
+        <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;- &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;message&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="k">for</span>
+        <span class="n">e</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">&#39;protocol&#39;</span><span class="p">]]))))</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%d</span><span class="s">] </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="submit"><a class="viewcode-back" href="../transcriptic.html#transcriptic.submit">[docs]</a><span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">test_mode</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+  <span class="n">_check_ctx</span><span class="p">()</span>
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
+      <span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+  <span class="n">req</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">/runs&#39;</span> <span class="o">%</span> <span class="n">project</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+    <span class="s">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+    <span class="s">&quot;protocol&quot;</span><span class="p">:</span> <span class="n">protocol</span><span class="p">,</span>
+    <span class="s">&quot;test_mode&quot;</span><span class="p">:</span> <span class="n">test_mode</span>
+  <span class="p">}))</span>
+  <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+  <span class="k">elif</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">AnalysisException</span><span class="p">(</span><span class="s">&quot;Error: Couldn&#39;t create run (404). </span><span class="se">\n</span><span class="s">Are you sure the project </span><span class="si">%s</span><span class="s"> &quot;</span>
+               <span class="s">&quot;exists, and that you have access to it?&quot;</span> <span class="o">%</span> <span class="n">ctx</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
+  <span class="k">elif</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">422</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">AnalysisException</span><span class="p">(</span><span class="s">&quot;Error creating run: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%d</span><span class="s">] </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="dataset"><a class="viewcode-back" href="../transcriptic.html#transcriptic.dataset">[docs]</a><span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;*&quot;</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="n">_check_ctx</span><span class="p">()</span>
+  <span class="n">req</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data/</span><span class="si">%s</span><span class="s">.json?key=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+  <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%d</span><span class="s">] </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">transcriptic</a></h1>
+
+
+
+<p class="blurb">A command-line interface and Python client library for interacting with Transcriptic's API.</p>
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=transcriptic&repo=transcriptic&type=follow&count=False&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../transcriptic.html">transcriptic package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://autoprotocol.org">Autoprotocol.org</a></li>
+    
+    <li class="toctree-l1"><a href="http://autoprotocol-python.readthedocs.org">Autoprotocol-Python</a></li>
+    
+    <li class="toctree-l1"><a href="http://transcriptic.com">Transcriptic Homepage</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Max Hodak, Tali Herzka, Jeremy Apthorp, Yang Choo, Peter Lee.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

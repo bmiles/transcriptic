@@ -1,0 +1,7 @@
+transcriptic.config module
+==========================
+
+.. automodule:: transcriptic.config
+    :members:
+    :undoc-members:
+    :show-inheritance:

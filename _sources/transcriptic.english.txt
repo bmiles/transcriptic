@@ -1,0 +1,7 @@
+transcriptic.english module
+===========================
+
+.. automodule:: transcriptic.english
+    :members:
+    :undoc-members:
+    :show-inheritance:

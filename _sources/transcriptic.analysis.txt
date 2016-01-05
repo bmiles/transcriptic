@@ -1,0 +1,17 @@
+transcriptic.analysis package
+=============================
+
+Submodules
+----------
+
+.. toctree::
+
+   transcriptic.analysis.spectrophotometry
+
+Module contents
+---------------
+
+.. automodule:: transcriptic.analysis
+    :members:
+    :undoc-members:
+    :show-inheritance:

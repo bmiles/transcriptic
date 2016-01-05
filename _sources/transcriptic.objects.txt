@@ -1,0 +1,7 @@
+transcriptic.objects module
+===========================
+
+.. automodule:: transcriptic.objects
+    :members:
+    :undoc-members:
+    :show-inheritance:
