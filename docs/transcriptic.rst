@@ -1,5 +1,28 @@
-transcriptic module
--------------------
+transcriptic package
+====================
 
-.. autoexception:: transcriptic.AnalysisException
+Subpackages
+-----------
 
+.. toctree::
+
+    transcriptic.analysis
+
+Submodules
+----------
+
+.. toctree::
+
+   transcriptic.cli
+   transcriptic.config
+   transcriptic.english
+   transcriptic.objects
+   transcriptic.util
+
+Module contents
+---------------
+
+.. automodule:: transcriptic
+    :members:
+    :undoc-members:
+    :show-inheritance:

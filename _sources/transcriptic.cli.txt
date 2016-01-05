@@ -1,11 +1,6 @@
 transcriptic.cli module
 =======================
 
-.. automodule:: transcriptic.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 ``transcriptic analyze``
 ~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.analyze
@@ -76,3 +71,7 @@ transcriptic.cli module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: transcriptic.cli.upload_release
 
+.. automodule:: transcriptic.cli
+    :members:
+    :undoc-members:
+    :show-inheritance:

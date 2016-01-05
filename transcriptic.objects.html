@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>transcriptic.objects module &mdash; transcriptic 2.0.4 documentation</title>
+    <title>transcriptic.objects module &mdash; transcriptic 2.0.5 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.0.4',
+        VERSION:     '2.0.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="transcriptic 2.0.4 documentation" href="index.html" />
-    <link rel="up" title="transcriptic package" href="transcriptic.html" />
-    <link rel="next" title="transcriptic.util module" href="transcriptic.util.html" />
-    <link rel="prev" title="transcriptic.english module" href="transcriptic.english.html" />
+    <link rel="top" title="transcriptic 2.0.5 documentation" href="index.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -41,120 +38,6 @@
             
   <div class="section" id="module-transcriptic.objects">
 <span id="transcriptic-objects-module"></span><h1>transcriptic.objects module<a class="headerlink" href="#module-transcriptic.objects" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="transcriptic.objects.ProtocolPreview">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">ProtocolPreview</code><span class="sig-paren">(</span><em>protocol</em>, <em>connection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#ProtocolPreview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.ProtocolPreview" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="transcriptic.objects.Instructions">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">Instructions</code><span class="sig-paren">(</span><em>raw_instructions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Instructions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Instructions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-<p>An instruction object contains raw instructions as JSON as well as list of
-operations and warps generated from the raw instructions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>raw_instructions</strong> (<em>dict</em>) &#8211; raw instruction dictionary</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
-<dt id="transcriptic.objects.Dataset">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>id</em>, <em>attributes</em>, <em>connection=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="transcriptic.objects.Run">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">Run</code><span class="sig-paren">(</span><em>id</em>, <em>attributes</em>, <em>connection=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-<dl class="method">
-<dt id="transcriptic.objects.Run.monitoring">
-<code class="descname">monitoring</code><span class="sig-paren">(</span><em>instruction_id</em>, <em>data_type='pressure'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Run.monitoring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Run.monitoring" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="transcriptic.objects.Run.data">
-<code class="descname">data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Run.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Run.data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="transcriptic.objects.Project">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>id</em>, <em>attributes</em>, <em>connection=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-<dl class="method">
-<dt id="transcriptic.objects.Project.runs">
-<code class="descname">runs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Project.runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Project.runs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="transcriptic.objects.Project.submit">
-<code class="descname">submit</code><span class="sig-paren">(</span><em>protocol</em>, <em>title</em>, <em>test_mode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Project.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Project.submit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="transcriptic.objects.Aliquot">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">Aliquot</code><span class="sig-paren">(</span><em>id</em>, <em>attributes</em>, <em>connection=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Aliquot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Aliquot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="transcriptic.objects.Container">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">Container</code><span class="sig-paren">(</span><em>id</em>, <em>attributes</em>, <em>connection=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Container" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-<p>A Container object represents a container from the Transcriptic LIMS and
-contains relevant information on the container type as well as the
-aliquots present in the container.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; Name of container</li>
-<li><strong>wellMap</strong> (<em>dict</em>) &#8211; Well mapping with well indices for keys and well names as values</li>
-<li><strong>aliquots</strong> (<em>list</em>) &#8211; List of aliquots present in the container</li>
-<li><strong>containerType</strong> (<em>autoprotocol.container_type.ContainerType</em>) &#8211; <p>Autoprotocol ContainerType object with many useful container type
-information and functions.</p>
-<p>Example Usage:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">my_container</span> <span class="o">=</span> <span class="n">container</span><span class="p">(</span><span class="s">&quot;ct186apgz6a374&quot;</span><span class="p">)</span>
-
-<span class="n">my_container</span><span class="o">.</span><span class="n">wellMap</span>
-
-<span class="n">my_container</span><span class="o">.</span><span class="n">containerType</span><span class="o">.</span><span class="n">col_count</span>
-<span class="n">my_container</span><span class="o">.</span><span class="n">containerType</span><span class="o">.</span><span class="n">robotize</span><span class="p">(</span><span class="s">&quot;B1&quot;</span><span class="p">)</span>
-<span class="n">my_container</span><span class="o">.</span><span class="n">containerType</span><span class="o">.</span><span class="n">humanize</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="transcriptic.objects.Container.__repr__">
-<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Container.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Container.__repr__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a string representation of a Container using the specified name.
-(ex. Container(&#8216;my_plate&#8217;))</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="transcriptic.objects.Resource">
-<em class="property">class </em><code class="descclassname">transcriptic.objects.</code><code class="descname">Resource</code><span class="sig-paren">(</span><em>id</em>, <em>attributes</em>, <em>connection=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic/objects.html#Resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.objects.Resource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">future.types.newobject.newobject</span></code></p>
-</dd></dl>
-
 </div>
 
 
@@ -180,20 +63,7 @@ information and functions.</p>
 
 
 <h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="transcriptic.html">transcriptic package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="transcriptic.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="transcriptic.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="transcriptic.cli.html">transcriptic.cli module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="transcriptic.config.html">transcriptic.config module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="transcriptic.english.html">transcriptic.english module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="">transcriptic.objects module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="transcriptic.util.html">transcriptic.util module</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="transcriptic.html#module-transcriptic">Module contents</a></li>
-</ul>
-</li>
+<ul class="simple">
 </ul>
 
 
@@ -211,10 +81,6 @@ information and functions.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="transcriptic.html">transcriptic package</a><ul>
-      <li>Previous: <a href="transcriptic.english.html" title="previous chapter">transcriptic.english module</a></li>
-      <li>Next: <a href="transcriptic.util.html" title="next chapter">transcriptic.util module</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -238,6 +104,9 @@ information and functions.</p>
     <div class="footer">
       &copy;2016, Max Hodak, Tali Herzka, Jeremy Apthorp, Yang Choo, Peter Lee.
       
+      |
+      <a href="_sources/transcriptic.objects.txt"
+          rel="nofollow">Page source</a>
     </div>
 
     

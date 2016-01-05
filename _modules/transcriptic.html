@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>transcriptic &mdash; transcriptic 2.0.4 documentation</title>
+    <title>transcriptic &mdash; transcriptic 2.0.5 documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0.4',
+        VERSION:     '2.0.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="transcriptic 2.0.4 documentation" href="../index.html" />
+    <link rel="top" title="transcriptic 2.0.5 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" />
    
   
@@ -44,7 +44,6 @@
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">transcriptic.objects</span> <span class="kn">import</span> <span class="n">Run</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">Aliquot</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">ProtocolPreview</span>
 <span class="kn">from</span> <span class="nn">autoprotocol</span> <span class="kn">import</span> <span class="n">Protocol</span>
-<span class="kn">from</span> <span class="nn">.analysis</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="n">ctx</span> <span class="o">=</span> <span class="bp">None</span>
@@ -56,6 +55,9 @@
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span></div>
 
 <span class="k">def</span> <span class="nf">_check_ctx</span><span class="p">():</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Check connection context.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">if</span> <span class="ow">not</span> <span class="n">ctx</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;No transcriptic.config.Connection context found!&quot;</span><span class="p">)</span>
 
@@ -71,25 +73,88 @@
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%d</span><span class="s">] </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
 
 <div class="viewcode-block" id="run"><a class="viewcode-back" href="../transcriptic.html#transcriptic.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Return a Run object based on the id of a run in your organization.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  id : str</span>
+<span class="sd">    13 alphanumeric string representing a run id (&quot;rXXXXXXXXXXXX&quot;)</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Run</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="project"><a class="viewcode-back" href="../transcriptic.html#transcriptic.project">[docs]</a><span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Return a Project object based on the id of a project in your organization.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  id : str</span>
+<span class="sd">    13 alphanumeric string representing a project id (&quot;pXXXXXXXXXXXX&quot;)</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Project</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="resource"><a class="viewcode-back" href="../transcriptic.html#transcriptic.resource">[docs]</a><span class="k">def</span> <span class="nf">resource</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Return a Resource object based on its id.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  id : str</span>
+<span class="sd">    13 alphanumeric string representing a resource id &quot;rsXXXXXXXXXXX&quot;</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Resource</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="aliquot"><a class="viewcode-back" href="../transcriptic.html#transcriptic.aliquot">[docs]</a><span class="k">def</span> <span class="nf">aliquot</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Return an Aliquot object based on the id of an aliquot in your organization&#39;s inventory.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  id : str</span>
+<span class="sd">    13 alphanumeric string representing an aliquot id &quot;aqXXXXXXXXXXX&quot;</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Aliquot</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="container"><a class="viewcode-back" href="../transcriptic.html#transcriptic.container">[docs]</a><span class="k">def</span> <span class="nf">container</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Return a Container object based on the id of a container in your organization&#39;s inventory.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  id : str</span>
+<span class="sd">    13 alphanumeric string representing a container id &quot;ctXXXXXXXXXXX&quot;</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">_get_object</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">Container</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="preview"><a class="viewcode-back" href="../transcriptic.html#transcriptic.preview">[docs]</a><span class="k">def</span> <span class="nf">preview</span><span class="p">(</span><span class="n">protocol</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Return a ProtocolPreview object based on a Protocol object or Autoprotocol-formatted JSON.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  protocol : Protocol, dict</span>
+<span class="sd">    Protocol object or Autoprotocol-formatted JSON</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">_check_ctx</span><span class="p">()</span>
   <span class="k">return</span> <span class="n">ProtocolPreview</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../transcriptic.html#transcriptic.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">test_mode</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../transcriptic.html#transcriptic.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">protocol</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Analyze a Protocol object or Autoprotocol-formatted JSON protocol</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  protocol : Protocol, dict</span>
+<span class="sd">    Protocol object or JSON-formatted protocol to analyze</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">_check_ctx</span><span class="p">()</span>
   <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
       <span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
@@ -114,6 +179,21 @@
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%d</span><span class="s">] </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="submit"><a class="viewcode-back" href="../transcriptic.html#transcriptic.submit">[docs]</a><span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">test_mode</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Submit a protocol or Protocol object to a project</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  protocol : Protocol, dict</span>
+<span class="sd">    Protocol object or JSON-formatted protocol to submit</span>
+<span class="sd">  project : str</span>
+<span class="sd">    13 alphanumeric string representing a project id to submit the protocol to</span>
+<span class="sd">  title : str, optional</span>
+<span class="sd">    Title of resulting run</span>
+<span class="sd">  test_mode : bool, optional</span>
+<span class="sd">    Submit run in test mode if set to True. Test mode runs cannot be executed on the workcell.</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">_check_ctx</span><span class="p">()</span>
   <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
       <span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
@@ -134,6 +214,14 @@
 
 <div class="viewcode-block" id="dataset"><a class="viewcode-back" href="../transcriptic.html#transcriptic.dataset">[docs]</a><span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;*&quot;</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Return a run&#39;s dataset based on its id</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  id : str</span>
+<span class="sd">    13 alphanumeric string representing a dataset&#39;s id</span>
+<span class="sd">  key : str, optional</span>
+
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">_check_ctx</span><span class="p">()</span>
   <span class="n">req</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data/</span><span class="si">%s</span><span class="s">.json?key=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>

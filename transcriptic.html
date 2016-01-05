@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>transcriptic package &mdash; transcriptic 2.0.4 documentation</title>
+    <title>transcriptic package &mdash; transcriptic 2.0.5 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.0.4',
+        VERSION:     '2.0.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="transcriptic 2.0.4 documentation" href="index.html" />
+    <link rel="top" title="transcriptic 2.0.5 documentation" href="index.html" />
     <link rel="next" title="transcriptic.analysis package" href="transcriptic.analysis.html" />
     <link rel="prev" title="transcriptic CLI and Python Client Library documentation" href="index.html" />
    
@@ -97,47 +97,138 @@
 <dl class="function">
 <dt id="transcriptic.run">
 <code class="descclassname">transcriptic.</code><code class="descname">run</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a Run object based on the id of a run in your organization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>str</em>) &#8211; 13 alphanumeric string representing a run id (&#8220;rXXXXXXXXXXXX&#8221;)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.project">
 <code class="descclassname">transcriptic.</code><code class="descname">project</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.project" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a Project object based on the id of a project in your organization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>str</em>) &#8211; 13 alphanumeric string representing a project id (&#8220;pXXXXXXXXXXXX&#8221;)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.resource">
 <code class="descclassname">transcriptic.</code><code class="descname">resource</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.resource" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a Resource object based on its id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>str</em>) &#8211; 13 alphanumeric string representing a resource id &#8220;rsXXXXXXXXXXX&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.aliquot">
 <code class="descclassname">transcriptic.</code><code class="descname">aliquot</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#aliquot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.aliquot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return an Aliquot object based on the id of an aliquot in your organization&#8217;s inventory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>str</em>) &#8211; 13 alphanumeric string representing an aliquot id &#8220;aqXXXXXXXXXXX&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.container">
 <code class="descclassname">transcriptic.</code><code class="descname">container</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.container" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a Container object based on the id of a container in your organization&#8217;s inventory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>str</em>) &#8211; 13 alphanumeric string representing a container id &#8220;ctXXXXXXXXXXX&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.preview">
 <code class="descclassname">transcriptic.</code><code class="descname">preview</code><span class="sig-paren">(</span><em>protocol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.preview" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a ProtocolPreview object based on a Protocol object or Autoprotocol-formatted JSON.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>protocol</strong> (<em>Protocol, dict</em>) &#8211; Protocol object or Autoprotocol-formatted JSON</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.analyze">
-<code class="descclassname">transcriptic.</code><code class="descname">analyze</code><span class="sig-paren">(</span><em>protocol</em>, <em>test_mode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.analyze" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">transcriptic.</code><code class="descname">analyze</code><span class="sig-paren">(</span><em>protocol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyze a Protocol object or Autoprotocol-formatted JSON protocol</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>protocol</strong> (<em>Protocol, dict</em>) &#8211; Protocol object or JSON-formatted protocol to analyze</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.submit">
 <code class="descclassname">transcriptic.</code><code class="descname">submit</code><span class="sig-paren">(</span><em>protocol</em>, <em>project</em>, <em>title=None</em>, <em>test_mode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.submit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Submit a protocol or Protocol object to a project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>protocol</strong> (<em>Protocol, dict</em>) &#8211; Protocol object or JSON-formatted protocol to submit</li>
+<li><strong>project</strong> (<em>str</em>) &#8211; 13 alphanumeric string representing a project id to submit the protocol to</li>
+<li><strong>title</strong> (<em>str, optional</em>) &#8211; Title of resulting run</li>
+<li><strong>test_mode</strong> (<em>bool, optional</em>) &#8211; Submit run in test mode if set to True. Test mode runs cannot be executed on the workcell.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="transcriptic.dataset">
 <code class="descclassname">transcriptic.</code><code class="descname">dataset</code><span class="sig-paren">(</span><em>id</em>, <em>key='*'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transcriptic.html#dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transcriptic.dataset" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a run&#8217;s dataset based on its id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>str</em>) &#8211; 13 alphanumeric string representing a dataset&#8217;s id</li>
+<li><strong>key</strong> (<em>str, optional</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 </div>
@@ -224,6 +315,9 @@
     <div class="footer">
       &copy;2016, Max Hodak, Tali Herzka, Jeremy Apthorp, Yang Choo, Peter Lee.
       
+      |
+      <a href="_sources/transcriptic.txt"
+          rel="nofollow">Page source</a>
     </div>
 
     
