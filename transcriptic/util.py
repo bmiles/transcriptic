@@ -31,9 +31,10 @@ def regex_manifest(protocol, input):
             pattern = '\[(.*?)\]'
             match = re.search(pattern, str(input["options"]))
             if not match:
-                click.echo("Error in %s: input type \"choice\" options must be in the "
-                           "form of: \n[\n  {\n  \"value\": <choice value>, \n  \"label\": "
-                           "<choice label>\n  },\n  ...\n]" % protocol['name'])
+                click.echo("Error in %s: input type \"choice\" options must "
+                           "be in the form of: \n[\n  {\n  \"value\": "
+                           "<choice value>, \n  \"label\": <choice label>\n "
+                           " },\n  ...\n]" % protocol['name'])
                 raise RuntimeError
         else:
             click.echo("Must have options for 'choice' input type." +
@@ -46,8 +47,8 @@ def iter_json(manifest):
     try:
         protocol = manifest['protocols']
     except TypeError:
-        raise RuntimeError("Error: Your manifest.json file doesn't contain valid JSON and"
-                           " cannot be formatted.")
+        raise RuntimeError("Error: Your manifest.json file doesn't contain "
+                           "valid JSON and cannot be formatted.")
     for protocol in manifest["protocols"]:
         types = {}
         for param, input in list(protocol["inputs"].items()):
@@ -116,4 +117,7 @@ def humanize(well_ref, well_count, col_count):
 
 
 def by_well(datasets, well):
-    return [datasets[reading].props['data'][well][0] for reading in list(datasets.keys())]
+    return [
+        datasets[reading].props['data'][well][0] for reading in
+        list(datasets.keys())
+        ]

@@ -1,5 +1,6 @@
 import json
-from transcriptic.objects import Run, Project, Aliquot, Resource, Container, Dataset, ProtocolPreview
+from transcriptic.objects import (Run, Project, Aliquot, Resource, Container,
+                                  Dataset, ProtocolPreview)
 from autoprotocol import Protocol
 
 ctx = None
@@ -73,10 +74,14 @@ def analyze(protocol, test_mode=False):
     if req.status_code == 200:
         return req.json()
     elif req.status_code == 422:
-        raise AnalysisException(("Error%s in protocol:\n%s" %
-                                 (("s" if len(req.json()['protocol']) > 1 else ""),
-                                  "".join(["- " + e['message'] + "\n" for
-                                           e in req.json()['protocol']]))))
+        raise AnalysisException(
+            ("Error%s in protocol:\n%s" % (
+                ("s" if len(req.json()['protocol']) > 1 else ""),
+                "".join(["- " + e['message'] + "\n" for
+                        e in req.json()['protocol']]
+                        )
+                )
+             ))
     else:
         raise Exception("[%d] %s" % (req.status_code, req.text))
 
@@ -93,8 +98,9 @@ def submit(protocol, project, title=None, test_mode=False):
     if req.status_code == 201:
         return req.json()
     elif req.status_code == 404:
-        raise AnalysisException("Error: Couldn't create run (404). \nAre you sure the project %s "
-                                "exists, and that you have access to it?" % ctx.url(project))
+        raise AnalysisException(
+            "Error: Couldn't create run (404). \nAre you sure the project %s "
+            "exists, and that you have access to it?" % ctx.url(project))
     elif req.status_code == 422:
         raise AnalysisException("Error creating run: %s" % req.text)
     else:
