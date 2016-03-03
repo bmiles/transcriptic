@@ -1,10 +1,6 @@
-from past.builtins import basestring
-import os
 import json
-import requests
 from transcriptic.objects import Run, Project, Aliquot, Resource, Container, Dataset, ProtocolPreview
 from autoprotocol import Protocol
-import sys
 
 ctx = None
 

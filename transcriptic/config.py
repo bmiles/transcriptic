@@ -10,7 +10,8 @@ from transcriptic.objects import Project
 
 class Connection(object):
     def __init__(
-        self, email=None, token=None, organization_id=False, api_root="https://secure.transcriptic.com", organization=False,
+        self, email=None, token=None, organization_id=False,
+        api_root="https://secure.transcriptic.com", organization=False,
         cookie=False, verbose=False
     ):
         if email is None:
@@ -54,7 +55,8 @@ class Connection(object):
     def projects(self):
         req = self.get('?q=&per_page=500')
         if req.status_code == 200:
-            return [Project(project['id'], project, connection=self) for project in req.json()['projects']]
+            return [Project(project['id'], project, connection=self) for
+                    project in req.json()['projects']]
         else:
             raise RuntimeError(
                 "There was an error listing the projects in your "
@@ -76,8 +78,9 @@ class Connection(object):
             return req.json()
         else:
             raise RuntimeError(
-                "There was an error fetching the runs in project %s" % project_id
-            )
+                "There was an error fetching the runs in project %s" %
+                project_id
+                )
 
     def create_project(self, title):
         req = self.post('', data=json.dumps({
@@ -138,22 +141,30 @@ class Connection(object):
     def post(self, path, **kwargs):
         if self.verbose:
             print ("POST %s" % self.url(path))
-        return requests.post(self.url(path), headers=self._merge_headers(kwargs), **kwargs)
+        return requests.post(self.url(path),
+                             headers=self._merge_headers(kwargs),
+                             **kwargs)
 
     def put(self, path, **kwargs):
         if self.verbose:
             print ("PUT %s" % self.url(path))
-        return requests.put(self.url(path), headers=self._merge_headers(kwargs), **kwargs)
+        return requests.put(self.url(path),
+                            headers=self._merge_headers(kwargs),
+                            **kwargs)
 
     def get(self, path, **kwargs):
         if self.verbose:
             print ("GET %s" % self.url(path))
-        return requests.get(self.url(path), headers=self._merge_headers(kwargs), **kwargs)
+        return requests.get(self.url(path),
+                            headers=self._merge_headers(kwargs),
+                            **kwargs)
 
     def delete(self, path, **kwargs):
         if self.verbose:
             print ("DELETE %s" % self.url(path))
-        return requests.delete(self.url(path), headers=self._merge_headers(kwargs), **kwargs)
+        return requests.delete(self.url(path),
+                               headers=self._merge_headers(kwargs),
+                               **kwargs)
 
     def _merge_headers(self, kwargs):
         default_headers = self.default_headers
