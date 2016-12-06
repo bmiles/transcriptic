@@ -122,7 +122,136 @@ def submit(ctx, file, project, title=None, test=None):
         click.echo(str(e))
 
 
-@cli.command('build-release')
+@cli.command()
+@click.pass_context
+@click.option(
+    '--remote',
+    is_flag=True,
+    required=False,
+    default=False,
+    help='Shows available protocols to be launched remotely'
+)
+def protocols(ctx, remote):
+    """List protocols within your manifest or organization."""
+    if remote:
+        protocol_objs = ctx.obj.api.get_protocols()
+    else:
+        manifest = load_manifest()
+        if 'protocols' not in list(manifest.keys()) or not manifest['protocols']:
+            click.echo("Your manifest.json file doesn't contain any protocols or"
+                       " is improperly formatted.")
+            return
+        protocol_objs = manifest['protocols']
+
+    click.echo('\n{:^60}'.format("Protocols within this {}:".format("organization" if remote else "manifest")))
+    click.echo('{:-^60}'.format(''))
+    for p in protocol_objs:
+        if p.get('display_name'):
+            display_str = "{} ({})".format(p['name'], p.get('display_name'))
+        else:
+            display_str = p['name']
+        click.echo("{}\n{}".format(display_str, '{:-^60}'.format("")))
+
+
+@cli.group(invoke_without_command=True)
+@click.pass_context
+@click.option("-i")
+def packages(ctx, i):
+    """List packages in your organization."""
+    if ctx.invoked_subcommand is None:
+        response = ctx.obj.api.packages()
+        # there's probably a better way to do this
+        package_names = OrderedDict(
+            sorted(list({"yours": {}, "theirs": {}}.items()),
+                   key=lambda t: len(t[0]))
+        )
+
+        for pack in response:
+            n = str(pack['name']).lower().replace(
+                "com.%s." % ctx.obj.api.organization_id, "")
+            latest = str(pack['latest_version']) if pack[
+                'latest_version'] else "-"
+            if pack.get('owner') and pack['owner']['email'] == ctx.obj.api.email:
+                package_names['yours'][n] = {}
+                package_names['yours'][n]['id'] = str(pack['id'])
+                package_names['yours'][n]['latest'] = latest
+            else:
+                package_names['theirs'][n] = {}
+                package_names['theirs'][n]['id'] = str(pack['id'])
+                package_names['theirs'][n]['latest'] = latest
+        if i:
+            return dict(list(package_names['yours'].items()) +
+                        list(package_names['theirs'].items()))
+        else:
+            for category, packages in list(package_names.items()):
+                if category == "yours":
+                    click.echo('\n{:^90}'.format("YOUR PACKAGES:\n"))
+                    click.echo('{:^30}'.format("PACKAGE NAME") + "|" +
+                               '{:^30}'.format("PACKAGE ID") +
+                               "|" + '{:^30}'.format("LATEST PUBLISHED RELEASE"))
+                    click.echo('{:-^90}'.format(''))
+                elif category == "theirs" and list(packages.values()):
+                    click.echo('\n{:^90}'.format("OTHER PACKAGES IN YOUR ORG:\n"))
+                    click.echo('{:^30}'.format("PACKAGE NAME") + "|" +
+                               '{:^30}'.format("PACKAGE ID") + "|" +
+                               '{:^30}'.format("LATEST PUBLISHED RELEASE"))
+                    click.echo('{:-^90}'.format(''))
+                for name, p in list(packages.items()):
+                    click.echo('{:<30}'.format(name) + "|" +
+                               '{:^30}'.format(p['id']) + "|" +
+                               '{:^30}'.format(p['latest']))
+                    click.echo('{:-^90}'.format(''))
+
+
+@packages.command("create")
+@click.argument('name')
+@click.argument('description')
+@click.pass_context
+def create_package(ctx, description, name):
+    """Create a new empty protocol package"""
+    existing = ctx.obj.api.packages()
+    for p in existing:
+        if name == p['name'].split('.')[-1]:
+            click.echo("You already have an existing package with the name "
+                       "\"%s\". Please choose a different package name." %
+                       name)
+            return
+    new_pack = ctx.obj.api.create_package(name, description)
+    if new_pack:
+        click.echo("New package '%s' created with id %s \n"
+                   "View it at %s" % (name, new_pack['id'],
+                                      ctx.obj.api.url('packages/%s' %
+                                                      new_pack['id'])
+                                      )
+                   )
+    else:
+        click.echo("There was an error creating this package.")
+
+
+@packages.command("delete")
+@click.argument('name')
+@click.option('--force', '-f', help="force delete a package without being \
+              prompted if you're sure", is_flag=True)
+@click.pass_context
+def delete_package(ctx, name, force):
+    """Delete an existing protocol package"""
+    package_id = get_package_id(name)
+    if package_id:
+        if not force:
+            click.confirm(
+                "Are you sure you want to permanently delete the package "
+                "'%s'?  All releases within will be lost." %
+                get_package_name(package_id), default=False, abort=True
+            )
+            click.confirm("Are you really really sure?", default=True)
+        del_pack = ctx.obj.api.delete_package(package_id=package_id)
+        if del_pack:
+            click.echo("Package deleted.")
+        else:
+            click.echo("There was a problem deleting this package.")
+
+
+@packages.command('build')
 @click.argument('package', required=False, metavar="PACKAGE")
 @click.option('--name', '-n', help="Optional name for your zip file")
 @click.pass_context
@@ -158,7 +287,7 @@ def release(ctx, name=None, package=None):
             upload_release, archive=(filename + ".zip"), package=package_id)
 
 
-@cli.command("upload-release")
+@packages.command("upload")
 @click.argument('archive', required=True, type=click.Path(exists=True),
                 metavar="ARCHIVE")
 @click.argument('package', required=True, metavar="PACKAGE")
@@ -235,200 +364,37 @@ def upload_release(ctx, archive, package):
                                                                 package_id))
 
 
-@cli.command()
-@click.pass_context
-@click.option(
-    '--remote',
-    is_flag=True,
-    required=False,
-    default=False,
-    help='Shows available protocols to be launched remotely'
-)
-def protocols(ctx, remote):
-    """List protocols within your manifest or organization."""
-    if remote:
-        protocol_objs = ctx.obj.api.get_protocols()
-    else:
-        manifest = load_manifest()
-        if 'protocols' not in list(manifest.keys()) or not manifest['protocols']:
-            click.echo("Your manifest.json file doesn't contain any protocols or"
-                       " is improperly formatted.")
-            return
-        protocol_objs = manifest['protocols']
-
-    click.echo('\n{:^60}'.format("Protocols within this {}:".format("organization" if remote else "manifest")))
-    click.echo('{:-^60}'.format(''))
-    for p in protocol_objs:
-        if p.get('display_name'):
-            display_str = "{} ({})".format(p['name'], p.get('display_name'))
-        else:
-            display_str = p['name']
-        click.echo("{}\n{}".format(display_str, '{:-^60}'.format("")))
-
-
-@cli.command()
-@click.pass_context
-@click.option("-i")
-def packages(ctx, i):
-    """List packages in your organization."""
-    response = ctx.obj.api.packages()
-    # there's probably a better way to do this
-    package_names = OrderedDict(
-        sorted(list({"yours": {}, "theirs": {}}.items()),
-               key=lambda t: len(t[0]))
-    )
-
-    for pack in response:
-        n = str(pack['name']).lower().replace(
-            "com.%s." % ctx.obj.api.organization_id, "")
-        latest = str(pack['latest_version']) if pack[
-            'latest_version'] else "-"
-        if pack.get('owner') and pack['owner']['email'] == ctx.obj.api.email:
-            package_names['yours'][n] = {}
-            package_names['yours'][n]['id'] = str(pack['id'])
-            package_names['yours'][n]['latest'] = latest
-        else:
-            package_names['theirs'][n] = {}
-            package_names['theirs'][n]['id'] = str(pack['id'])
-            package_names['theirs'][n]['latest'] = latest
-    if i:
-        return dict(list(package_names['yours'].items()) +
-                    list(package_names['theirs'].items()))
-    else:
-        for category, packages in list(package_names.items()):
-            if category == "yours":
-                click.echo('\n{:^90}'.format("YOUR PACKAGES:\n"))
-                click.echo('{:^30}'.format("PACKAGE NAME") + "|" +
-                           '{:^30}'.format("PACKAGE ID") +
-                           "|" + '{:^30}'.format("LATEST PUBLISHED RELEASE"))
-                click.echo('{:-^90}'.format(''))
-            elif category == "theirs" and list(packages.values()):
-                click.echo('\n{:^90}'.format("OTHER PACKAGES IN YOUR ORG:\n"))
-                click.echo('{:^30}'.format("PACKAGE NAME") + "|" +
-                           '{:^30}'.format("PACKAGE ID") + "|" +
-                           '{:^30}'.format("LATEST PUBLISHED RELEASE"))
-                click.echo('{:-^90}'.format(''))
-            for name, p in list(packages.items()):
-                click.echo('{:<30}'.format(name) + "|" +
-                           '{:^30}'.format(p['id']) + "|" +
-                           '{:^30}'.format(p['latest']))
-                click.echo('{:-^90}'.format(''))
-
-
-@cli.command("create-package")
-@click.argument('name')
-@click.argument('description')
-@click.pass_context
-def create_package(ctx, description, name):
-    """Create a new empty protocol package"""
-    existing = ctx.obj.api.packages()
-    for p in existing:
-        if name == p['name'].split('.')[-1]:
-            click.echo("You already have an existing package with the name "
-                       "\"%s\". Please choose a different package name." %
-                       name)
-            return
-    new_pack = ctx.obj.api.create_package(name, description)
-    if new_pack:
-        click.echo("New package '%s' created with id %s \n"
-                   "View it at %s" % (name, new_pack['id'],
-                                      ctx.obj.api.url('packages/%s' %
-                                                      new_pack['id'])
-                                      )
-                   )
-    else:
-        click.echo("There was an error creating this package.")
-
-
-@cli.command("delete-package")
-@click.argument('name')
-@click.option('--force', '-f', help="force delete a package without being \
-              prompted if you're sure", is_flag=True)
-@click.pass_context
-def delete_package(ctx, name, force):
-    """Delete an existing protocol package"""
-    package_id = get_package_id(name)
-    if package_id:
-        if not force:
-            click.confirm(
-                "Are you sure you want to permanently delete the package "
-                "'%s'?  All releases within will be lost." %
-                get_package_name(package_id), default=False, abort=True
-            )
-            click.confirm("Are you really really sure?", default=True)
-        del_pack = ctx.obj.api.delete_package(package_id=package_id)
-        if del_pack:
-            click.echo("Package deleted.")
-        else:
-            click.echo("There was a problem deleting this package.")
-
-
-@cli.command()
+@cli.group(invoke_without_command=True)
 @click.pass_context
 @click.option("-i")
 def projects(ctx, i):
     """List the projects in your organization"""
-    try:
-        projects = ctx.obj.api.projects()
-        proj_names = {}
-        all_proj = {}
-        for proj in projects:
-            status = " (archived)" if proj['archived_at'] else ""
-            proj_names[proj["name"]] = proj["id"]
-            all_proj[proj["name"] + status] = proj["id"]
-        if i:
-            return proj_names
-        else:
-            click.echo('\n{:^80}'.format("PROJECTS:\n"))
-            click.echo('{:^40}'.format("PROJECT NAME") + "|" +
-                       '{:^40}'.format("PROJECT ID"))
-            click.echo('{:-^80}'.format(''))
-            for name, i in list(all_proj.items()):
-                click.echo('{:<40}'.format(name) + "|" +
-                           '{:^40}'.format(i))
+    if ctx.invoked_subcommand is None:
+        try:
+            projects = ctx.obj.api.projects()
+            proj_names = {}
+            all_proj = {}
+            for proj in projects:
+                status = " (archived)" if proj['archived_at'] else ""
+                proj_names[proj["name"]] = proj["id"]
+                all_proj[proj["name"] + status] = proj["id"]
+            if i:
+                return proj_names
+            else:
+                click.echo('\n{:^80}'.format("PROJECTS:\n"))
+                click.echo('{:^40}'.format("PROJECT NAME") + "|" +
+                           '{:^40}'.format("PROJECT ID"))
                 click.echo('{:-^80}'.format(''))
-    except RuntimeError:
-        click.echo("There was an error listing the projects in your "
-                   "organization.  Make sure your login details are correct.")
+                for name, i in list(all_proj.items()):
+                    click.echo('{:<40}'.format(name) + "|" +
+                               '{:^40}'.format(i))
+                    click.echo('{:-^80}'.format(''))
+        except RuntimeError:
+            click.echo("There was an error listing the projects in your "
+                       "organization.  Make sure your login details are correct.")
 
 
-@cli.command()
-@click.pass_context
-@click.argument('project_name')
-def runs(ctx, project_name):
-    """List the runs that exist in a project"""
-    project_id = get_project_id(project_name)
-    run_list = []
-    if project_id:
-        req = ctx.obj.api.runs(project_id=project_id)
-        if not req:
-            click.echo("Project '%s' is empty." % project_name)
-            return
-        for r in req:
-            run_list.append([r['title'] or "(Untitled)",
-                             r['id'],
-                             r['completed_at'].split("T")[0] if r['completed_at']
-                             else r['created_at'].split("T")[0],
-                             r['status'].replace("_", " ")])
-
-        click.echo(
-            '\n{:^120}'.format("Runs in Project '%s':\n" %
-                               get_project_name(project_name))
-        )
-        click.echo('{:^30}'.format("RUN TITLE") + "|" +
-                   '{:^30}'.format("RUN ID") + "|" +
-                   '{:^30}'.format("RUN DATE") + "|" +
-                   '{:^30}'.format('RUN STATUS'))
-        click.echo('{:-^120}'.format(''))
-        for run in run_list:
-            click.echo('{:^30}'.format(run[0]) + "|" +
-                       '{:^30}'.format(run[1]) + "|" +
-                       '{:^30}'.format(run[2]) + "|" +
-                       '{:^30}'.format(run[3]))
-            click.echo('{:-^120}'.format(''))
-
-
-@cli.command("create-project")
+@projects.command("create")
 @click.argument('name', metavar="PROJECT_NAME")
 @click.option('--dev', '-d', '-pilot', help="Create a pilot project",
               is_flag=True)
@@ -454,7 +420,7 @@ def create_project(ctx, name, dev):
         click.echo("There was an error creating this project.")
 
 
-@cli.command("delete-project")
+@projects.command("delete")
 @click.argument('name', metavar="PROJECT_NAME")
 @click.option('--force', '-f', help="force delete a project without being \
               prompted if you're sure", is_flag=True)
@@ -483,6 +449,105 @@ def delete_project(ctx, name, force):
                 click.echo("Project archived.")
             else:
                 click.echo("Could not archive project!")
+
+
+@projects.command("info")
+@click.argument('name', metavar="PROJECT_NAME")
+@click.pass_context
+def info_project(ctx, name):
+    """Get info of an existing project."""
+    project_id = get_project_id(name)
+    try:
+        project = ctx.obj.api.project(project_id=str(project_id))
+        click.secho("   %s" % project['name'], bold=True)
+        click.echo("Created:", nl=False)
+        click.echo('{:^20}'.format("%s") % project['created_at'])
+        click.echo("BSL level:", nl=False)
+        click.echo('{:^17}'.format("%s") % project['bsl'])
+        click.echo("Webhook:", nl=False)
+        click.echo('{:^20}'.format("%s") % project['webhook_url'])
+        click.echo("Web URL:", nl=False)
+        click.echo('{:^20}'.format("%s") % ctx.obj.api.url('%s' % (project['id'])))
+    except RuntimeError:
+        click.echo("There was an error listing the project in your "
+                   "organization.  Make sure your login details are correct.")
+
+
+@cli.group(invoke_without_command=True)
+@click.pass_context
+@click.argument('project_name')
+def runs(ctx, project_name):
+    """List the runs that exist in a project"""
+    if ctx.invoked_subcommand is None:
+        project_id = get_project_id(project_name)
+        run_list = []
+        if project_id:
+            req = ctx.obj.api.runs(project_id=project_id)
+            if not req:
+                click.echo("Project '%s' is empty." % project_name)
+                return
+            for r in req:
+                run_list.append([r['title'] or "(Untitled)",
+                                 r['id'],
+                                 r['completed_at'].split("T")[0] if r['completed_at']
+                                 else r['created_at'].split("T")[0],
+                                 r['status'].replace("_", " ")])
+
+            click.echo(
+                '\n{:^120}'.format("Runs in Project '%s':\n" %
+                                   get_project_name(project_name))
+            )
+            click.echo('{:^30}'.format("RUN TITLE") + "|" +
+                       '{:^30}'.format("RUN ID") + "|" +
+                       '{:^30}'.format("RUN DATE") + "|" +
+                       '{:^30}'.format('RUN STATUS'))
+            click.echo('{:-^120}'.format(''))
+            for run in run_list:
+                click.echo('{:^30}'.format(run[0]) + "|" +
+                           '{:^30}'.format(run[1]) + "|" +
+                           '{:^30}'.format(run[2]) + "|" +
+                           '{:^30}'.format(run[3]))
+                click.echo('{:-^120}'.format(''))
+
+
+@runs.command()
+@click.pass_context
+@click.argument('project_name')
+def active(ctx, project_name):
+    """List currently running, runs that exist in a project"""
+    project_id = get_project_id(project_name)
+    run_list = []
+    if project_id:
+        req = ctx.obj.api.runs(project_id=project_id)
+        if not req:
+            # click.echo("Project ", nl=False)
+            click.secho(u'\u23E3 %s' % project_name, fg='magenta', nl=False)
+            click.echo(" is empty")
+            return
+        for r in req:
+            if r['status'] == 'in_progress':
+                run_list.append([r['title'] or "(Untitled)",
+                                 r['id'],
+                                 r['started_at'].split("T")[0],
+                                 r['progress']])
+
+        if len(run_list) == 0:
+            click.echo('No active runs in ', nl=False)
+            click.secho(u'\u23E3 %s' % project_name, fg='cyan', bg=None, bold=False, dim=False, underline=None, blink=None, reverse=None, reset=True)
+        else:
+            click.echo(
+            '\n{:^120}'.format("Runs in Project '%s':\n" %
+                               get_project_name(project_name))
+            )
+            click.echo('{:^30}'.format("RUN TITLE") +
+                       '{:^30}'.format("RUN ID") +
+                       '{:^30}'.format("START DATE") +
+                       '{:^30}'.format('PROGRESS (%)'))
+            for run in run_list:
+                click.echo('{:^30}'.format(run[0]) +
+                           '{:^30}'.format(run[1]) +
+                           '{:^30}'.format(run[2]) +
+                           '{:^30}'.format(run[3]))
 
 
 @cli.command()
@@ -1259,3 +1324,84 @@ def stdchannel_redirected(stdchannel, dest_filename):
             os.dup2(oldstdchannel, stdchannel.fileno())
         if dest_file is not None:
             dest_file.close()
+
+# @click.group(invoke_without_command=True,context_settings=_CONTEXT_SETTINGS)
+# @click.pass_context
+# @click.command
+# @click.argument('project_name')
+# def runs(ctx, project_name):
+#     """List the runs that exist in a project"""
+#     project_id = get_project_id(project_name)
+#     run_list = []
+#     if project_id:
+#         req = ctx.obj.api.runs(project_id=project_id)
+#         if not req:
+#             click.echo("Project '%s' is empty." % project_name)
+#             return
+#         for r in req:
+#             run_list.append([r['title'] or "(Untitled)",
+#                              r['id'],
+#                              r['completed_at'].split("T")[0] if r['completed_at']
+#                              else r['created_at'].split("T")[0],
+#                              r['status'].replace("_", " ")])
+#
+#         click.echo(
+#             '\n{:^120}'.format("Runs in Project '%s':\n" %
+#                                get_project_name(project_name))
+#         )
+#         click.echo('{:^30}'.format("RUN TITLE") + "|" +
+#                    '{:^30}'.format("RUN ID") + "|" +
+#                    '{:^30}'.format("RUN DATE") + "|" +
+#                    '{:^30}'.format('RUN STATUS'))
+#         click.echo('{:-^120}'.format(''))
+#         for run in run_list:
+#             click.echo('{:^30}'.format(run[0]) + "|" +
+#                        '{:^30}'.format(run[1]) + "|" +
+#                        '{:^30}'.format(run[2]) + "|" +
+#                        '{:^30}'.format(run[3]))
+#             click.echo('{:-^120}'.format(''))
+#
+#
+# @runs.command()
+# @click.pass_context
+# @click.argument('project_name')
+# def active(ctx, project_name):
+#     """List active runs exist in a project"""
+#     project_id = get_project_id(project_name)
+#     run_list = []
+#     if project_id:
+#         req = ctx.obj.api.runs(project_id=project_id)
+#         if not req:
+#             # click.echo("Project ", nl=False)
+#             click.secho(u'\u23E3 %s' % project_name, fg='magenta', nl=False)
+#             click.echo(" is empty")
+#             return
+#         for r in req:
+#             if r['status'] == 'in_progress':
+#                 run_list.append([r['title'] or "(Untitled)",
+#                                  r['id'],
+#                                  r['started_at'].split("T")[0],
+#                                  r['progress']])
+#
+#         if len(run_list) == 0:
+#             click.echo('No active runs in ', nl=False)
+#             click.secho(u'\u23E3 %s' % project_name, fg='cyan', bg=None, bold=False, dim=False, underline=None, blink=None, reverse=None, reset=True)
+#         else:
+#             click.echo(
+#             '\n{:^120}'.format("Runs in Project '%s':\n" %
+#                                get_project_name(project_name))
+#             )
+#             click.echo('{:^30}'.format("RUN TITLE") +
+#                        '{:^30}'.format("RUN ID") +
+#                        '{:^30}'.format("START DATE") +
+#                        '{:^30}'.format('PROGRESS (%)'))
+#             for run in run_list:
+#                 click.echo('{:^30}'.format(run[0]) +
+#                            '{:^30}'.format(run[1]) +
+#                            '{:^30}'.format(run[2]) +
+#                            '{:^30}'.format(run[3]))
+#
+#
+# cli2 = click.CommandCollection(sources=[cli, runs])
+# if __name__ == '__main__':
+#     cli2()
